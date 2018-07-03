@@ -9,3 +9,9 @@ export const AUTHENTICATION_LOADED = 'AUTHENTICATION_LOADED'
 export const SAVE_STAFF_PROFILE = 'SAVE_STAFF_PROFILE'
 export const SAVE_CORPORATION_PROFILE = 'SAVE_CORPORATION_PROFILE'
 export const LOCATION_FORWARDING = 'LOCATION_FORWARDING'
+
+// actions related to assistants
+export const SAVE_ASSISTANTS = 'SAVE_ASSISTANTS'
+
+// actions related to ads
+export const SAVE_ADS = 'SAVE_ADS'

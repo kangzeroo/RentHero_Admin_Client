@@ -20,6 +20,8 @@ import MobileSkeleton from './format/mobile/MobileSkeleton'
 import RequireAuth from './auth/RequireAuth'
 import AppHome from './home/AppHome'
 import AdsPage from './ads/AdsPage'
+import AssistantsPage from './assistants/AssistantsPage'
+import CreateAssistant from './assistants/create/CreateAssistant'
 import SettingsPage from './settings/SettingsPage'
 import RegistrationHome from './registration/RegistrationHome'
 
@@ -49,6 +51,8 @@ class AppRoutes extends Component {
       this.props.changeSelectedTab('settings')
     } else if (path.startsWith('/app/home')) {
       this.props.changeSelectedTab('home')
+    } else if (path.startsWith('/app/assistants')) {
+      this.props.changeSelectedTab('assistants')
     }
   }
 
@@ -75,6 +79,8 @@ class AppRoutes extends Component {
 			<Switch>
         <Route exact path='/app/home' component={RequireAuth(AppHome)} />
         <Route exact path='/app/ads' component={RequireAuth(AdsPage)} />
+        <Route exact path='/app/assistants' component={RequireAuth(AssistantsPage)} />
+        <Route exact path='/app/assistants/create' component={RequireAuth(CreateAssistant)} />
         <Route exact path='/app/settings' component={RequireAuth(SettingsPage)} />
         <Route exact path='/app/registration' component={RequireAuth(RegistrationHome)} />
       </Switch>
@@ -109,11 +115,13 @@ class AppRoutes extends Component {
       navs = [
         { key: 'home', title: 'Home', path: '/app/home', icon: (<Icon type='home' />), selectedIcon: (<Icon type='home' style={{ color: '#33A3F4' }} />) },
         { key: 'ads', title: 'Ads', path: '/app/ads', icon: (<Icon type='appstore' />), selectedIcon: (<Icon type='appstore' style={{ color: '#33A3F4' }} />) },
+        { key: 'assistants', title: 'Assistants', path: '/app/assistants', icon: (<Icon type='user' />), selectedIcon: (<Icon type='user' style={{ color: '#33A3F4' }} />) },
         { key: 'settings', title: 'Settings', path: '/app/settings', icon: (<Icon type='setting' />), selectedIcon: (<Icon type='setting' style={{ color: '#33A3F4' }} />) },
       ]
       desktop_navs = [
         { key: 'home', title: 'Home', path: '/app/home', icon: (<Icon type='home' />) },
         { key: 'ads', title: 'Ads', path: '/app/ads', icon: (<Icon type='appstore' />) },
+        { key: 'assistants', title: 'Assistants', path: '/app/assistants', icon: (<Icon type='user' />) },
         { key: 'settings', title: 'Settings', path: '/app/settings', icon: (<Icon type='setting' />) },
       ]
     }

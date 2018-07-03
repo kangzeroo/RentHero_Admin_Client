@@ -10,11 +10,12 @@ import { withRouter } from 'react-router-dom'
 import {
 	Button,
 	Icon,
+	message,
 } from 'antd'
 import SubtitlesMachine from '../modules/SubtitlesMachine'
 import { GOOGLE_CLIENT_AUTH_CREDS } from '../../api/ENV_CREDS'
 import { registerGoogleLoginWithCognito } from '../../api/aws/aws-cognito'
-import { getAssistantProfile } from '../../api/auth/auth_api'
+import { getAdminProfile } from '../../api/auth/auth_api'
 import { authenticateStaff, saveStaffProfileToRedux } from '../../actions/auth/auth_actions'
 
 class HomePage extends Component {
@@ -47,24 +48,30 @@ class HomePage extends Component {
           client_id: GOOGLE_CLIENT_AUTH_CREDS.clientId
         })
         .then((GoogleUser) => {
-          console.log(GoogleUser)
-          // GoogleUser.grantOfflineAccess()
-          profile = {
-            google_id: GoogleUser.getBasicProfile().getId(),
-            name: GoogleUser.getBasicProfile().getName(),
-            first_name: GoogleUser.getBasicProfile().getGivenName(),
-            last_name: GoogleUser.getBasicProfile().getFamilyName(),
-            pic: GoogleUser.getBasicProfile().getImageUrl(),
-            email: GoogleUser.getBasicProfile().getEmail()
-          }
-          console.log(profile)
-          const auth = GoogleUser.getAuthResponse(true)
-          console.log(auth)
-          return registerGoogleLoginWithCognito(auth.id_token)
+					const emailSource = GoogleUser.getBasicProfile().getEmail().split('@')[1]
+					console.log(emailSource)
+
+					if (emailSource === 'renthero.com') {
+						profile = {
+	            google_id: GoogleUser.getBasicProfile().getId(),
+	            name: GoogleUser.getBasicProfile().getName(),
+	            first_name: GoogleUser.getBasicProfile().getGivenName(),
+	            last_name: GoogleUser.getBasicProfile().getFamilyName(),
+	            pic: GoogleUser.getBasicProfile().getImageUrl(),
+	            email: GoogleUser.getBasicProfile().getEmail()
+	          }
+	          console.log(profile)
+	          const auth = GoogleUser.getAuthResponse(true)
+	          console.log(auth)
+	          return registerGoogleLoginWithCognito(auth.id_token)
+					} else {
+						console.log('INVALID')
+						message.error('You are not allowed to sign in')
+					}
         })
         .then(({ IdentityId }) => {
           console.log('LOGGED INTO GMAIL', IdentityId)
-          return getAssistantProfile(IdentityId, profile)
+          return getAdminProfile(IdentityId, profile)
         })
         .then((data) => {
           console.log(data)
@@ -103,7 +110,7 @@ class HomePage extends Component {
 			<div id='HomePage' style={comStyles().container}>
 				<div style={comStyles().font_logo}>RentHero</div>
 				<div style={comStyles().tagline}>
-					ASSISTANTS PORTAL
+					ADMIN PORTAL
 				</div>
 				<Button onClick={() => this.loginWithGoogle()} type='ghost' style={{ width: '250px', color: 'white', border: '1px solid white' }}>
 					Login with Gmail <Icon type='right' />
@@ -155,9 +162,9 @@ const comStyles = () => {
       width: '100vw',
       justifyContent: 'center',
       alignItems: 'center',
-			background: '#f4c4f3',  /* fallback for old browsers */
-			background: '-webkit-linear-gradient(to left, #f4c4f3, #fc67fa)',  /* Chrome 10-25, Safari 5.1-6 */
-			background: 'linear-gradient(to left, #f4c4f3, #fc67fa)', /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+			background: '#ffe259',  /* fallback for old browsers */
+			background: '-webkit-linear-gradient(to left, #ffe259, #ffa751)',  /* Chrome 10-25, Safari 5.1-6 */
+			background: 'linear-gradient(to left, #ffe259, #ffa751)', /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 		},
     font_logo: {
       fontSize: '3rem',

@@ -67,7 +67,6 @@ export default (ComposedComponent) => {
 					}
 					// if they have, then we'll auto log them in
 					this.props.history.push(location)
-					this.props.authenticationLoaded()
 					return this.saveStaffProfileToRedux(data.profile, location)
 				})
 				.catch((err) => {
@@ -85,6 +84,7 @@ export default (ComposedComponent) => {
 			let app_location = location
 			this.props.saveStaffProfileToRedux(staff)
 			this.props.authenticateStaff(staff)
+			this.props.authenticationLoaded()
 
 			return this.grabAllInitialData()
 				.then((results) => {

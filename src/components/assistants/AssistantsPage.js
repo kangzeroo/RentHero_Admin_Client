@@ -57,6 +57,7 @@ class AssistantsPage extends Component {
 							<List.Item
 								key={item.assistant_id}
 								actions={[<a>edit</a>]}
+								onClick={() => this.props.history.push(`${window.location.pathname}/${item.assistant_id}`)}
 							>
 								<List.Item.Meta
 									avatar={<Avatar style={{ backgroundColor: '#ffa751', verticalAlign: 'middle' }}>{item.email.toUpperCase()[0]}</Avatar>}

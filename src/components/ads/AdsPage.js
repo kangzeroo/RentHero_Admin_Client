@@ -6,36 +6,79 @@ import { connect } from 'react-redux'
 import Radium from 'radium'
 import PropTypes from 'prop-types'
 import Rx from 'rxjs'
+import moment from 'moment'
+import QueueAnim from 'rc-queue-anim';
+import TweenOne from 'rc-tween-one'
 import { withRouter } from 'react-router-dom'
 import {
 	List,
+	Button,
+	Input,
+	Icon,
 } from 'antd'
 
-
 class AdsPage extends Component {
+
+	constructor() {
+		super()
+		this.state = {
+			search_string: ''
+		}
+	}
+
+	renderAdsList() {
+		const filtered_ads = this.props.all_ads.filter((ad) => {
+			 return ad.ad_title.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1 ||
+							ad.formatted_address.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1
+			})
+		return (
+			<div>
+				<div style={comStyles().headerContainer}>
+					<h2>{`${filtered_ads.length} Advertisement${filtered_ads.length === 1 ? '' : 's'}`}</h2>
+					<Input
+						placeholder='Search...'
+						value={this.state.search_string}
+						onChange={e => this.setState({ search_string: e.target.value })}
+						style={{ maxWidth :'50%' }}
+						prefix={<Icon type='search' />}
+					/>
+				</div>
+				<br />
+				<List
+					itemLayout='horizontal'
+					loading={!this.props.loading_complete}
+					size='large'
+				>
+					<QueueAnim type='bottom' component='div'>
+						{
+							filtered_ads.map((item) => {
+								// console.log(moment(moment.utc(item.created_at)).local())
+								return (
+									<List.Item
+										key={item.ad_id}
+										onClick={() => this.props.history.push(`${window.location.pathname}/${item.ad_id}`)}
+										actions={[<a>VIEW</a>]}
+									>
+										<List.Item.Meta
+											title={`${item.ad_title ? item.ad_title : item.formatted_address}`}
+											description={`${item.ad_title ? item.formatted_address : ''}`}
+										/>
+									</List.Item>
+								)
+							})
+						}
+					</QueueAnim>
+				</List>
+			</div>
+		)
+	}
 
 	render() {
 		return (
 			<div id='AdsPage' style={comStyles().container}>
-				<h2>{`${this.props.all_ads.length} Advertisements`}</h2>
-				<List
-					loading={!this.props.loading_complete}
-					itemLayout='horizontal'
-					dataSource={this.props.all_ads}
-					renderItem={(item) => {
-						return (
-							<List.Item
-								key={item.ad_id}
-								actions={[<a>VIEW</a>]}
-							>
-								<List.Item.Meta
-									title={`Title: ${item.ad_title}`}
-									description={`Address: ${item.formatted_address}`}
-								/>
-							</List.Item>
-						)
-					}}
-				/>
+				{
+					this.renderAdsList()
+				}
 			</div>
 		)
 	}
@@ -80,6 +123,12 @@ const comStyles = () => {
       display: 'flex',
       flexDirection: 'column',
 			padding: '20px',
+		},
+		headerContainer: {
+			display: 'flex',
+			flexDirection: 'row',
+			justifyContent: 'space-between',
+			alignItems: 'center',
 		}
 	}
 }

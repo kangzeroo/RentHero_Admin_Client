@@ -67,9 +67,9 @@ const comStyles = () => {
       maxWidth: '100vw',
       // background: 'rgba(81, 151, 214, 1)',
       padding: '15px',
-			background: '#f4c4f3',  /* fallback for old browsers */
-			background: '-webkit-linear-gradient(to left, #f4c4f3, #fc67fa)',  /* Chrome 10-25, Safari 5.1-6 */
-			background: 'linear-gradient(to left, #f4c4f3, #fc67fa)', /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+			background: '#ffe259',  /* fallback for old browsers */
+			background: '-webkit-linear-gradient(to left, #ffe259, #ffa751)',  /* Chrome 10-25, Safari 5.1-6 */
+			background: 'linear-gradient(to left, #ffe259, #ffa751)', /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 		},
     font_logo: {
       fontSize: '1.5rem',

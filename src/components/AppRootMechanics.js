@@ -15,16 +15,25 @@ import {
 } from '../actions/auth/auth_actions'
 import { saveLoadingCompleteToRedux } from '../actions/app/app_actions'
 import {
+	saveAssistantsToRedux,
+} from '../actions/assistants/assistants_actions'
+import {
+	saveAdsToRedux,
+} from '../actions/ads/ads_actions'
+import {
 	redirectPath,
 	setLanguageFromLocale,
 	checkIfPartOfRoutes,
 } from '../api/general/general_api'
 import {
-	getAssistantProfile,
-	// getCorporationProfile,
+	getAdminProfile,
 } from '../api/auth/auth_api'
-
-
+import {
+	getAssistants,
+} from '../api/assistants/assistants_api'
+import {
+	getAds,
+} from '../api/ads/ads_api'
 // this 'higher order component'(HOC) creator takes a component (called ComposedComponent)
 // and returns a new component with added functionality
 export default (ComposedComponent) => {
@@ -49,7 +58,7 @@ export default (ComposedComponent) => {
 					console.log(staff)
 					console.log('kz trippin balls')
 					console.log(location)
-					return getAssistantProfile(staff.IdentityId, {})
+					return getAdminProfile(staff.IdentityId, {})
 				})
 				.then((data) => {
 					console.log(data)
@@ -77,8 +86,16 @@ export default (ComposedComponent) => {
 			this.props.saveStaffProfileToRedux(staff)
 			this.props.authenticateStaff(staff)
 
-			this.props.saveLoadingCompleteToRedux()
-			this.props.history.push(app_location)
+			return this.grabAllInitialData()
+				.then((results) => {
+					console.log(results)
+					const ads = results[0]
+					const assistants = results[1]
+					this.props.saveAdsToRedux(ads)
+					this.props.saveAssistantsToRedux(assistants)
+					this.props.saveLoadingCompleteToRedux()
+					this.props.history.push(app_location)
+				})
 
 			// return getCorporationProfile(staff.corporation_id)
 			// 	.then((corp) => {
@@ -103,9 +120,10 @@ export default (ComposedComponent) => {
 			// 	})
 		}
 
-		grabAllInitialData(corporation_id) {
+		grabAllInitialData() {
 			const initials = [
-
+				getAds(),
+				getAssistants(),
 			]
 			console.log(initials)
 			return Promise.all(initials)
@@ -147,6 +165,8 @@ export default (ComposedComponent) => {
 		dispatchActionsToRedux: PropTypes.func.isRequired,
 		saveLoadingCompleteToRedux: PropTypes.func.isRequired,
 		authenticationLoaded: PropTypes.func.isRequired,
+		saveAdsToRedux: PropTypes.func.isRequired,
+		saveAssistantsToRedux: PropTypes.func.isRequired,
   }
 
   // for all optional props, define a default value
@@ -170,6 +190,8 @@ export default (ComposedComponent) => {
 			dispatchActionsToRedux,
 			saveLoadingCompleteToRedux,
 			authenticationLoaded,
+			saveAdsToRedux,
+			saveAssistantsToRedux,
     })(AppRootMechanics)
 	)
 }

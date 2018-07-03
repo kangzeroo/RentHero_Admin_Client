@@ -18,6 +18,7 @@ import 'antd/dist/antd.css'
 import AppRootMechanics from './AppRootMechanics'
 import AppRoutes from './AppRoutes'
 import HomePage from './pages/HomePage'
+import Logout from './auth/Logout'
 import TweenOne from 'rc-tween-one'
 import '../styles/pretty_scrollbar.css'
 
@@ -31,6 +32,7 @@ class AppRoot extends Component {
         <Switch>
           <Route exact path='/' render={HomePage} />
           <Route exact path='/login' render={HomePage} />
+          <Route exact path='/logout' render={Logout} />
 
           <Route path='/app/*' component={AppRoutes} />
 

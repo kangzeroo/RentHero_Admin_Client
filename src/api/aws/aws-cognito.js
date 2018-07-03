@@ -1,4 +1,4 @@
-// AWS Cognito for authenticating user_id
+// AWS Cognito for authenticating admin_id
 // https://github.com/aws/amazon-cognito-identity-js
 
 import uuid from 'uuid'
@@ -35,7 +35,7 @@ export const retrieveStaffFromLocalStorage = () => {
           if (AWS.config.credentials.expired) {
             rej('Expired credentials')
           } else {
-            localStorage.setItem('user_id', AWS.config.credentials.data.IdentityId)
+            localStorage.setItem('admin_id', AWS.config.credentials.data.IdentityId)
             res({
               IdentityId: AWS.config.credentials.data.IdentityId,
             })
@@ -77,7 +77,7 @@ export function registerGoogleLoginWithCognito(accessToken) {
         const client = new AWS.CognitoSyncManager()
         console.log(AWS.config.credentials)
         console.log('yeee')
-        localStorage.setItem('user_id', AWS.config.credentials.data.IdentityId)
+        localStorage.setItem('admin_id', AWS.config.credentials.data.IdentityId)
         res({
           IdentityId: AWS.config.credentials.data.IdentityId,
         })
@@ -88,4 +88,16 @@ export function registerGoogleLoginWithCognito(accessToken) {
     }
    })
   return p
+}
+
+export const signOutLandlord = () => {
+	const p = new Promise((res, rej) => {
+		const cognitoUser = staffPool.getCurrentUser()
+		if (cognitoUser) {
+			cognitoUser.signOut()
+		} else {
+      localStorage.clear()
+    }
+	})
+	return p
 }

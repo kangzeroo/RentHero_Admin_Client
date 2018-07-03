@@ -82,9 +82,9 @@ class HomePage extends Component {
           } else {
             // self.props.history.push('/onboarding/checkstaff')
             self.props.history.push('/app/home')
-            setTimeout(() => {
+            // setTimeout(() => {
               window.location.reload()
-            }, 500)
+            // }, 500)
           }
         })
         .catch((err) => {

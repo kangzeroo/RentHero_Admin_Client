@@ -26,7 +26,7 @@ class MobileSkeleton extends Component {
       <TabBar
         id='MobileSkeleton'
         unselectedTintColor='#949494'
-        tintColor='#33A3F4'
+        tintColor='#ffa751'
         barTintColor='white'
       >
         {

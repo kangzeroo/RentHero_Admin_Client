@@ -75,7 +75,7 @@ class AdsPage extends Component {
 
 	render() {
 		return (
-			<div id='AdsPage' style={comStyles().container}>
+			<div id='AdsPage' style={comStyles().scroll} className='pretty_scrollbar'>
 				{
 					this.renderAdsList()
 				}
@@ -129,6 +129,19 @@ const comStyles = () => {
 			flexDirection: 'row',
 			justifyContent: 'space-between',
 			alignItems: 'center',
-		}
+		},
+		scroll: {
+			display: 'flex',
+			flexDirection: 'column',
+			// flexWrap: 'wrap',
+			// maxHeight: '100%',
+			minWidth: '100%',
+			maxWidth: '100%',
+			height: '100%',
+			overflowY: 'scroll',
+			// padding: '15px',
+			justifyContent: 'flex-start',
+		  padding: '20px',
+		},
 	}
 }

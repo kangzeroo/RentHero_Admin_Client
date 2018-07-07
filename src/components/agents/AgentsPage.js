@@ -13,9 +13,9 @@ import {
 	Avatar,
 	Button,
 } from 'antd'
-import { getAssistants } from '../../api/assistants/assistants_api'
+import { getAgents } from '../../api/agents/agents_api'
 
-class AssistantsPage extends Component {
+class AgentsPage extends Component {
 
 	constructor() {
 		super()
@@ -26,7 +26,7 @@ class AssistantsPage extends Component {
 	}
   //
 	// componentWillMount() {
-	// 	getAssistants()
+	// 	getAgents()
 	// 		.then((assistants) => {
 	// 			console.log(assistants)
 	// 			this.setState({
@@ -41,23 +41,24 @@ class AssistantsPage extends Component {
 
 	render() {
 		return (
-			<div id='AssistantsPage' style={comStyles().container}>
+			<div id='AgentsPage' style={comStyles().container}>
 				<div style={comStyles().headerContainer}>
-					<h2>{`${this.props.all_assistants.length} Assistants`}</h2>
-					<Button type='primary' icon='user-add' onClick={() => this.props.history.push('/app/assistants/create')}>
-						Add New Assistant
+					<h2>{`${this.props.all_agents.length} Agents`}</h2>
+					<Button type='primary' icon='user-add' onClick={() => this.props.history.push('/app/agents/create')}>
+						Add New Agent
 					</Button>
 				</div>
+        <br /><br />
 				<List
 					itemLayout='horizontal'
 					loading={!this.props.loading_complete}
-					dataSource={this.props.all_assistants}
+					dataSource={this.props.all_agents}
 					renderItem={(item) => {
 						return (
 							<List.Item
-								key={item.assistant_id}
+								key={item.agent_id}
 								actions={[<a>edit</a>]}
-								onClick={() => this.props.history.push(`${window.location.pathname}/${item.assistant_id}`)}
+								onClick={() => this.props.history.push(`${window.location.pathname}/${item.agent_id}`)}
 							>
 								<List.Item.Meta
 									avatar={<Avatar style={{ backgroundColor: '#ffa751', verticalAlign: 'middle' }}>{item.email.toUpperCase()[0]}</Avatar>}
@@ -74,24 +75,24 @@ class AssistantsPage extends Component {
 }
 
 // defines the types of variables in this.props
-AssistantsPage.propTypes = {
+AgentsPage.propTypes = {
 	history: PropTypes.object.isRequired,
-  all_assistants: PropTypes.array.isRequired,
+  all_agents: PropTypes.array.isRequired,
   loading_complete: PropTypes.bool.isRequired,
 }
 
 // for all optional props, define a default value
-AssistantsPage.defaultProps = {
+AgentsPage.defaultProps = {
 
 }
 
 // Wrap the prop in Radium to allow JS styling
-const RadiumHOC = Radium(AssistantsPage)
+const RadiumHOC = Radium(AgentsPage)
 
 // Get access to state from the Redux store
 const mapReduxToProps = (redux) => {
 	return {
-    all_assistants: redux.assistants.all_assistants,
+    all_agents: redux.agents.all_agents,
     loading_complete: redux.app.loading_complete,
 	}
 }

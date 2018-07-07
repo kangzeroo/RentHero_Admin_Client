@@ -1,17 +1,17 @@
 import {
-  SAVE_ASSISTANTS
+  SAVE_AGENTS
 } from '../../actions/action_types'
 
 const INITIAL_STATE = {
-  all_assistants: [],
+  all_agents: [],
 }
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case SAVE_ASSISTANTS:
+    case SAVE_AGENTS:
       return {
         ...state,
-        all_assistants: action.payload,
+        all_agents: action.payload,
       }
     default:
       return {

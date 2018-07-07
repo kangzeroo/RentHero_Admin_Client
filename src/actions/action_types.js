@@ -13,7 +13,7 @@ export const LOCATION_FORWARDING = 'LOCATION_FORWARDING'
 export const REMOVE_STAFF_PROFILE = 'REMOVE_STAFF_PROFILE'
 
 // actions related to assistants
-export const SAVE_ASSISTANTS = 'SAVE_ASSISTANTS'
+export const SAVE_AGENTS = 'SAVE_AGENTS'
 
 // actions related to ads
 export const SAVE_ADS = 'SAVE_ADS'

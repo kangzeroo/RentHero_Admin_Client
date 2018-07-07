@@ -1,13 +1,13 @@
 import {
-  SAVE_ASSISTANTS,
+  SAVE_AGENTS,
 } from '../action_types'
 
 // authenticate the staff member's account
-export const saveAssistantsToRedux = (assistants) => {
+export const saveAgentsToRedux = (agents) => {
   return (dispatch) => {
     dispatch({
-      type: SAVE_ASSISTANTS,
-      payload: assistants,
+      type: SAVE_AGENTS,
+      payload: agents,
     })
   }
 }

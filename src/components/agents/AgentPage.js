@@ -12,43 +12,44 @@ import {
 } from 'antd-mobile'
 
 
-class AssistantPage extends Component {
+class AgentPage extends Component {
 
   constructor() {
     super()
     this.state = {
-      assistant_id: '',
-      assistant: {},
+      agent_id: '',
+      agent: {},
 
       loading: true,
     }
   }
 
   componentWillMount() {
-    const assistant_id = this.props.location.pathname.slice('/app/assistants/'.length)
+    const agent_id = this.props.location.pathname.slice('/app/agents/'.length)
     this.setState({
-      assistant_id: assistant_id,
+      agent_id: agent_id,
     })
 
     if (this.props.loading_complete) {
-      this.refreshAssistant(assistant_id)
+      this.refreshAgent(agent_id)
     }
   }
 
   componentWillReceiveProps(nextProps) {
-		if (this.props.all_assistants !== nextProps.all_assistants) {
-			this.refreshAssistant(this.state.assistant_id)
+		if (this.props.all_agents !== nextProps.all_agents) {
+			this.refreshAgent(this.state.agent_id)
 		}
 	}
 
-	refreshAssistant(assistant_id) {
-		const assistant = this.props.all_assistants.filter((ass) => { return ass.assistant_id === assistant_id })[0]
-		if (assistant) {
+	refreshAgent(agent_id) {
+		const agent = this.props.all_agents.filter((ass) => { return ass.agent_id === agent_id })[0]
+		if (agent) {
 			this.setState({
-        assistant: assistant,
+        agent: agent,
         loading: false,
       })
 		} else {
+      console.log('invalid')
 			this.props.history.push('/invalid')
 		}
 	}
@@ -56,33 +57,33 @@ class AssistantPage extends Component {
 
 	render() {
 		return (
-			<div id='AssistantPage' style={comStyles().container}>
-				<h2>{`${this.state.assistant.first_name ? `${this.state.assistant.first_name} ${this.state.assistant.last_name}` : this.state.assistant.email }`}</h2>
-        <p>{`${this.state.assistant.first_name ? this.state.assistant.email : ''}`}</p>
+			<div id='AgentPage' style={comStyles().container}>
+				<h2>{`${this.state.agent.first_name ? `${this.state.agent.first_name} ${this.state.agent.last_name}` : this.state.agent.email }`}</h2>
+        <p>{`${this.state.agent.first_name ? this.state.agent.email : ''}`}</p>
 			</div>
 		)
 	}
 }
 
 // defines the types of variables in this.props
-AssistantPage.propTypes = {
+AgentPage.propTypes = {
 	history: PropTypes.object.isRequired,
-  all_assistants: PropTypes.array.isRequired,
+  all_agents: PropTypes.array.isRequired,
   loading_complete: PropTypes.bool.isRequired,
 }
 
 // for all optional props, define a default value
-AssistantPage.defaultProps = {
+AgentPage.defaultProps = {
 
 }
 
 // Wrap the prop in Radium to allow JS styling
-const RadiumHOC = Radium(AssistantPage)
+const RadiumHOC = Radium(AgentPage)
 
 // Get access to state from the Redux store
 const mapReduxToProps = (redux) => {
 	return {
-    all_assistants: redux.assistants.all_assistants,
+    all_agents: redux.agents.all_agents,
     loading_complete: redux.app.loading_complete,
 	}
 }

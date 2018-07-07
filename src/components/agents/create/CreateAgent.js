@@ -12,27 +12,27 @@ import {
   Button,
   message,
 } from 'antd'
-import { saveAssistantsToRedux } from '../../../actions/assistants/assistants_actions'
-import { insertAssistant, getAssistants, } from '../../../api/assistants/assistants_api'
+import { saveAgentsToRedux } from '../../../actions/agents/agents_actions'
+import { insertAgent, getAgents, } from '../../../api/agents/agents_api'
 
-class CreateAssistant extends Component {
+class CreateAgent extends Component {
 
   constructor() {
     super()
     this.state = {
-      assistant_email: '',
+      agent_email: '',
       saving: false,
     }
   }
 
-  createAssistant() {
-    insertAssistant(this.state.assistant_email)
+  createAgent() {
+    insertAgent(this.state.agent_email)
       .then((data) => {
         message.success(data.message)
-        getAssistants()
+        getAgents()
           .then((data) => {
-            this.props.saveAssistantsToRedux(data)
-            this.props.history.push('/app/assistants')
+            this.props.saveAgentsToRedux(data)
+            this.props.history.push('/app/agents')
           })
       })
       .catch((err) => {
@@ -42,20 +42,20 @@ class CreateAssistant extends Component {
 
 	render() {
 		return (
-			<div id='CreateAssistant' style={comStyles().container}>
-				<h1>Create New Assistant</h1>
+			<div id='CreateAgent' style={comStyles().container}>
+				<h1>Create New Agent</h1>
         <p>This will not send an invite to the email yet...</p>
-        <p>This will only insert into the database so that the assistant can log into the Assistant Portal</p>
+        <p>This will only insert into the database so that the agent can log into the Agent Portal</p>
 
         <Input
           placeholder='something@gmail.com'
-          value={this.state.assistant_email}
-          onChange={e => this.setState({ assistant_email: e.target.value })}
-          onPressEnter={this.state.assistant_email.length === 0 ? () => {} : () => this.createAssistant()}
+          value={this.state.agent_email}
+          onChange={e => this.setState({ agent_email: e.target.value })}
+          onPressEnter={this.state.agent_email.length === 0 ? () => {} : () => this.createAgent()}
         />
         <br />
-        <Button type='primary' icon='user-add' onClick={() => this.createAssistant()} loading={this.state.saving} disabled={this.state.assistant_email.length === 0}>
-          Create Assistant
+        <Button type='primary' icon='user-add' onClick={() => this.createAgent()} loading={this.state.saving} disabled={this.state.agent_email.length === 0}>
+          Create Agent
         </Button>
 			</div>
 		)
@@ -63,18 +63,18 @@ class CreateAssistant extends Component {
 }
 
 // defines the types of variables in this.props
-CreateAssistant.propTypes = {
+CreateAgent.propTypes = {
 	history: PropTypes.object.isRequired,
-  saveAssistantsToRedux: PropTypes.func.isRequired,
+  saveAgentsToRedux: PropTypes.func.isRequired,
 }
 
 // for all optional props, define a default value
-CreateAssistant.defaultProps = {
+CreateAgent.defaultProps = {
 
 }
 
 // Wrap the prop in Radium to allow JS styling
-const RadiumHOC = Radium(CreateAssistant)
+const RadiumHOC = Radium(CreateAgent)
 
 // Get access to state from the Redux store
 const mapReduxToProps = (redux) => {
@@ -86,7 +86,7 @@ const mapReduxToProps = (redux) => {
 // Connect together the Redux store with this React component
 export default withRouter(
 	connect(mapReduxToProps, {
-    saveAssistantsToRedux,
+    saveAgentsToRedux,
 	})(RadiumHOC)
 )
 

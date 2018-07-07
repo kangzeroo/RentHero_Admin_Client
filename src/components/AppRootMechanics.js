@@ -15,8 +15,8 @@ import {
 } from '../actions/auth/auth_actions'
 import { saveLoadingCompleteToRedux } from '../actions/app/app_actions'
 import {
-	saveAssistantsToRedux,
-} from '../actions/assistants/assistants_actions'
+	saveAgentsToRedux,
+} from '../actions/agents/agents_actions'
 import {
 	saveAdsToRedux,
 } from '../actions/ads/ads_actions'
@@ -29,8 +29,8 @@ import {
 	getAdminProfile,
 } from '../api/auth/auth_api'
 import {
-	getAssistants,
-} from '../api/assistants/assistants_api'
+	getAgents,
+} from '../api/agents/agents_api'
 import {
 	getAds,
 } from '../api/ads/ads_api'
@@ -90,9 +90,9 @@ export default (ComposedComponent) => {
 				.then((results) => {
 					console.log(results)
 					const ads = results[0]
-					const assistants = results[1]
+					const agents = results[1]
 					this.props.saveAdsToRedux(ads)
-					this.props.saveAssistantsToRedux(assistants)
+					this.props.saveAgentsToRedux(agents)
 					this.props.saveLoadingCompleteToRedux()
 					this.props.history.push(app_location)
 				})
@@ -123,7 +123,7 @@ export default (ComposedComponent) => {
 		grabAllInitialData() {
 			const initials = [
 				getAds(),
-				getAssistants(),
+				getAgents(),
 			]
 			console.log(initials)
 			return Promise.all(initials)
@@ -166,7 +166,7 @@ export default (ComposedComponent) => {
 		saveLoadingCompleteToRedux: PropTypes.func.isRequired,
 		authenticationLoaded: PropTypes.func.isRequired,
 		saveAdsToRedux: PropTypes.func.isRequired,
-		saveAssistantsToRedux: PropTypes.func.isRequired,
+		saveAgentsToRedux: PropTypes.func.isRequired,
   }
 
   // for all optional props, define a default value
@@ -191,7 +191,7 @@ export default (ComposedComponent) => {
 			saveLoadingCompleteToRedux,
 			authenticationLoaded,
 			saveAdsToRedux,
-			saveAssistantsToRedux,
+			saveAgentsToRedux,
     })(AppRootMechanics)
 	)
 }

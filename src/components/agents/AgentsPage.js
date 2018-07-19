@@ -20,17 +20,17 @@ class AgentsPage extends Component {
 	constructor() {
 		super()
 		this.state = {
-			// assistants: [],
+			// agents: [],
 			loading: true,
 		}
 	}
   //
 	// componentWillMount() {
 	// 	getAgents()
-	// 		.then((assistants) => {
-	// 			console.log(assistants)
+	// 		.then((agents) => {
+	// 			console.log(agents)
 	// 			this.setState({
-	// 				assistants,
+	// 				agents,
 	// 				loading: false,
 	// 			})
 	// 		})

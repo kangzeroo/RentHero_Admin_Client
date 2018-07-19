@@ -34,6 +34,14 @@ import {
 import {
 	getAds,
 } from '../api/ads/ads_api'
+import {
+	getAllCorporations,
+} from '../api/corp/corp_api'
+import {
+	saveCorpsToRedux,
+} from '../actions/corp/corp_actions'
+
+
 // this 'higher order component'(HOC) creator takes a component (called ComposedComponent)
 // and returns a new component with added functionality
 export default (ComposedComponent) => {
@@ -91,8 +99,10 @@ export default (ComposedComponent) => {
 					console.log(results)
 					const ads = results[0]
 					const agents = results[1]
+					const corps = results[2]
 					this.props.saveAdsToRedux(ads)
 					this.props.saveAgentsToRedux(agents)
+					this.props.saveCorpsToRedux(corps)
 					this.props.saveLoadingCompleteToRedux()
 					this.props.history.push(app_location)
 				})
@@ -124,6 +134,7 @@ export default (ComposedComponent) => {
 			const initials = [
 				getAds(),
 				getAgents(),
+				getAllCorporations(),
 			]
 			console.log(initials)
 			return Promise.all(initials)
@@ -167,6 +178,7 @@ export default (ComposedComponent) => {
 		authenticationLoaded: PropTypes.func.isRequired,
 		saveAdsToRedux: PropTypes.func.isRequired,
 		saveAgentsToRedux: PropTypes.func.isRequired,
+		saveCorpsToRedux: PropTypes.func.isRequired,
   }
 
   // for all optional props, define a default value
@@ -192,6 +204,7 @@ export default (ComposedComponent) => {
 			authenticationLoaded,
 			saveAdsToRedux,
 			saveAgentsToRedux,
+			saveCorpsToRedux,
     })(AppRootMechanics)
 	)
 }

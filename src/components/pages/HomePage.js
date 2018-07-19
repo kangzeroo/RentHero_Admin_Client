@@ -13,7 +13,7 @@ import {
 	message,
 } from 'antd'
 import SubtitlesMachine from '../modules/SubtitlesMachine'
-import { GOOGLE_CLIENT_AUTH_CREDS } from '../../api/ENV_CREDS'
+import { GOOGLE_CLIENT_AUTH_CREDS } from '../../../credentials/ENV_CREDS'
 import { registerGoogleLoginWithCognito } from '../../api/aws/aws-cognito'
 import { getAdminProfile } from '../../api/auth/auth_api'
 import { authenticateStaff, saveStaffProfileToRedux } from '../../actions/auth/auth_actions'
@@ -112,7 +112,7 @@ class HomePage extends Component {
 				<div style={comStyles().tagline}>
 					ADMIN PORTAL
 				</div>
-				<Button onClick={() => this.loginWithGoogle()} type='ghost' style={{ width: '250px', color: 'white', border: '1px solid white' }}>
+				<Button size='large' onClick={() => this.loginWithGoogle()} type='ghost' style={{ width: '250px', color: '#ffa751', border: '1px solid white', background: 'white', fontWeight: 'bold', borderRadius: '25px' }}>
 					Login with Gmail <Icon type='right' />
 				</Button>
 			</div>

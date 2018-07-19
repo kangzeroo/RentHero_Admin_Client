@@ -57,7 +57,7 @@ class HomePage extends Component {
 	            name: GoogleUser.getBasicProfile().getName(),
 	            first_name: GoogleUser.getBasicProfile().getGivenName(),
 	            last_name: GoogleUser.getBasicProfile().getFamilyName(),
-	            pic: GoogleUser.getBasicProfile().getImageUrl(),
+	            thumbnail: GoogleUser.getBasicProfile().getImageUrl(),
 	            email: GoogleUser.getBasicProfile().getEmail()
 	          }
 	          console.log(profile)

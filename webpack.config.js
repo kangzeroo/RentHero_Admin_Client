@@ -5,6 +5,8 @@ const fs = require('fs')
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ManifestPlugin = require('webpack-manifest-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+
 const lessToJs = require('less-vars-to-js');
 
 const themeVariables = lessToJs(fs.readFileSync(path.join(__dirname, './scripts/ant-theme-vars.less'), 'utf8'));
@@ -17,7 +19,7 @@ const config = {
     publicPath: '/',
     filename: 'bundle.js'
   },
-  devtool: 'source-map',
+  // devtool: 'source-map',
   module: {
     rules: [
       {
@@ -109,6 +111,12 @@ const config = {
     // new ManifestPlugin({
     //   gcm_sender_id: '103953800507'
     // })
+    new webpack.optimize.UglifyJsPlugin({
+        compress: {
+            drop_console: true
+        },
+        mangle: false
+    })
   ],
   devServer: {
     hot: true,

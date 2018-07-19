@@ -12,8 +12,11 @@ export const SAVE_CORPORATION_PROFILE = 'SAVE_CORPORATION_PROFILE'
 export const LOCATION_FORWARDING = 'LOCATION_FORWARDING'
 export const REMOVE_STAFF_PROFILE = 'REMOVE_STAFF_PROFILE'
 
-// actions related to assistants
+// actions related to agents
 export const SAVE_AGENTS = 'SAVE_AGENTS'
 
 // actions related to ads
 export const SAVE_ADS = 'SAVE_ADS'
+
+// actions related to corp
+export const SAVE_CORPS = 'SAVE_CORPS'

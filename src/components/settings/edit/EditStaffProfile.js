@@ -49,7 +49,7 @@ class EditStaffProfile extends Component {
       staff_id: staff_id,
     })
 
-    if (this.props.loading_complete) {
+    if (this.props.stage_one_complete) {
       this.refreshStaff(staff_id)
     }
   }
@@ -267,7 +267,7 @@ EditStaffProfile.propTypes = {
 	history: PropTypes.object.isRequired,
   staff_profile: PropTypes.object.isRequired,
   corporation_profile: PropTypes.object.isRequired,
-  loading_complete: PropTypes.bool.isRequired,
+  stage_one_complete: PropTypes.bool.isRequired,
   setStaffProfile: PropTypes.func.isRequired,
 }
 
@@ -284,7 +284,7 @@ const mapReduxToProps = (redux) => {
 	return {
     staff_profile: redux.auth.staff_profile,
     corporation_profile: redux.auth.corporation_profile,
-    loading_complete: redux.app.loading_complete,
+    stage_one_complete: redux.app.stage_one_complete,
 	}
 }
 

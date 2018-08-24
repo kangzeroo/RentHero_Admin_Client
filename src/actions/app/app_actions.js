@@ -1,7 +1,7 @@
 import {
   CHANGE_LANGUAGE,
   CHANGE_TAB,
-  LOADING_COMPLETE,
+  STAGE_ONE_COMPLETE,
 } from '../action_types'
 
 // change the language of the app
@@ -25,10 +25,10 @@ export const changeSelectedTab = (tab) => {
   }
 }
 
-export const saveLoadingCompleteToRedux = () => {
+export const stageOneComplete = () => {
   return (dispatch) => {
     dispatch({
-      type: LOADING_COMPLETE,
+      type: STAGE_ONE_COMPLETE,
       payload: true,
     })
   }

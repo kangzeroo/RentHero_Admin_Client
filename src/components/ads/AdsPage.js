@@ -46,7 +46,7 @@ class AdsPage extends Component {
 				<br />
 				<List
 					itemLayout='horizontal'
-					loading={!this.props.loading_complete}
+					loading={!this.props.stage_one_complete}
 					size='large'
 				>
 					<QueueAnim type='bottom' component='div'>
@@ -88,7 +88,7 @@ class AdsPage extends Component {
 AdsPage.propTypes = {
 	history: PropTypes.object.isRequired,
 	all_ads: PropTypes.array.isRequired,
-	loading_complete: PropTypes.bool.isRequired,
+	stage_one_complete: PropTypes.bool.isRequired,
 }
 
 // for all optional props, define a default value
@@ -103,7 +103,7 @@ const RadiumHOC = Radium(AdsPage)
 const mapReduxToProps = (redux) => {
 	return {
 		all_ads: redux.ads.all_ads,
-		loading_complete: redux.app.loading_complete,
+		stage_one_complete: redux.app.stage_one_complete,
 	}
 }
 

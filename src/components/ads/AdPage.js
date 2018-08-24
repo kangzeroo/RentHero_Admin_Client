@@ -34,7 +34,7 @@ class AdPage extends Component {
       ad_id: ad_id,
     })
 
-    if (this.props.loading_complete) {
+    if (this.props.stage_one_complete) {
       this.refreshAd(ad_id)
     }
   }
@@ -238,7 +238,7 @@ class AdPage extends Component {
 AdPage.propTypes = {
 	history: PropTypes.object.isRequired,
   all_ads: PropTypes.array.isRequired,
-  loading_complete: PropTypes.bool.isRequired,
+  stage_one_complete: PropTypes.bool.isRequired,
 }
 
 // for all optional props, define a default value
@@ -253,7 +253,7 @@ const RadiumHOC = Radium(AdPage)
 const mapReduxToProps = (redux) => {
 	return {
     all_ads: redux.ads.all_ads,
-    loading_complete: redux.app.loading_complete,
+    stage_one_complete: redux.app.stage_one_complete,
 	}
 }
 

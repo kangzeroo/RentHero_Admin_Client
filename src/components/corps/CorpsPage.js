@@ -76,7 +76,7 @@ class CorpsPage extends Component {
 		return (
 			<div id='CorpsPage' style={comStyles().container}>
 				 {
-           this.props.loading_complete
+           this.props.stage_one_complete
            ?
            this.renderCorps()
            :
@@ -93,7 +93,7 @@ class CorpsPage extends Component {
 CorpsPage.propTypes = {
 	history: PropTypes.object.isRequired,
   corps: PropTypes.array.isRequired,
-  loading_complete: PropTypes.bool.isRequired,
+  stage_one_complete: PropTypes.bool.isRequired,
 }
 
 // for all optional props, define a default value
@@ -108,7 +108,7 @@ const RadiumHOC = Radium(CorpsPage)
 const mapReduxToProps = (redux) => {
 	return {
     corps: redux.corps.all_corps,
-    loading_complete: redux.app.loading_complete,
+    stage_one_complete: redux.app.stage_one_complete,
 	}
 }
 

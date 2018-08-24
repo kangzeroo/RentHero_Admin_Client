@@ -13,9 +13,9 @@ import {
 	forwardUrlLocation,
 	saveCorporationProfileToRedux,
 } from '../actions/auth/auth_actions'
-import { saveLoadingCompleteToRedux } from '../actions/app/app_actions'
+import { stageOneComplete } from '../actions/app/app_actions'
 import {
-	saveAgentsToRedux,
+	saveAgentsToRedux, saveOperatorsToRedux,
 } from '../actions/agents/agents_actions'
 import {
 	saveAdsToRedux,
@@ -29,7 +29,7 @@ import {
 	getAdminProfile,
 } from '../api/auth/auth_api'
 import {
-	getAgents,
+	getAgents, getOperators,
 } from '../api/agents/agents_api'
 import {
 	getAds,
@@ -94,46 +94,27 @@ export default (ComposedComponent) => {
 			this.props.authenticateStaff(staff)
 			this.props.authenticationLoaded()
 
-			return this.grabAllInitialData()
+			return this.stageOneData()
 				.then((results) => {
 					console.log(results)
 					const ads = results[0]
 					const agents = results[1]
-					const corps = results[2]
+					const operators = results[2]
+					const corps = results[3]
 					this.props.saveAdsToRedux(ads)
 					this.props.saveAgentsToRedux(agents)
+					this.props.saveOperatorsToRedux(operators)
 					this.props.saveCorpsToRedux(corps)
-					this.props.saveLoadingCompleteToRedux()
+					this.props.stageOneComplete()
 					this.props.history.push(app_location)
 				})
-
-			// return getCorporationProfile(staff.corporation_id)
-			// 	.then((corp) => {
-			// 		if (corp === '') {
-			// 			console.log('corp is nth nigga')
-			// 			this.props.saveCorporationProfileToRedux({})
-			// 			app_location = '/app/registration'
-			// 			this.props.history.push('/app/registration')
-			// 		} else {
-			// 			this.props.saveCorporationProfileToRedux(corp)
-			// 			return this.grabAllInitialData(corp.corporation_id)
-			// 		}
-			// 	})
-			// 	.then((results) => {
-			// 		console.log(results)
-			// 		this.props.saveLoadingCompleteToRedux()
-			// 		this.props.history.push(app_location)
-			// 	})
-			// 	.catch((err) => {
-			// 		console.log('nooooo')
-			// 		console.log(err)
-			// 	})
 		}
 
-		grabAllInitialData() {
+		stageOneData() {
 			const initials = [
 				getAds(),
 				getAgents(),
+				getOperators(),
 				getAllCorporations(),
 			]
 			console.log(initials)
@@ -174,11 +155,12 @@ export default (ComposedComponent) => {
 		authenticateStaff: PropTypes.func.isRequired,
 		saveCorporationProfileToRedux: PropTypes.func.isRequired,
 		dispatchActionsToRedux: PropTypes.func.isRequired,
-		saveLoadingCompleteToRedux: PropTypes.func.isRequired,
+		stageOneComplete: PropTypes.func.isRequired,
 		authenticationLoaded: PropTypes.func.isRequired,
 		saveAdsToRedux: PropTypes.func.isRequired,
 		saveAgentsToRedux: PropTypes.func.isRequired,
 		saveCorpsToRedux: PropTypes.func.isRequired,
+		saveOperatorsToRedux: PropTypes.func.isRequired,
   }
 
   // for all optional props, define a default value
@@ -200,11 +182,12 @@ export default (ComposedComponent) => {
 			authenticateStaff,
 			saveCorporationProfileToRedux,
 			dispatchActionsToRedux,
-			saveLoadingCompleteToRedux,
+			stageOneComplete,
 			authenticationLoaded,
 			saveAdsToRedux,
 			saveAgentsToRedux,
 			saveCorpsToRedux,
+			saveOperatorsToRedux,
     })(AppRootMechanics)
 	)
 }

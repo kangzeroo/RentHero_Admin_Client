@@ -12,29 +12,29 @@ import {
   Button,
   message,
 } from 'antd'
-import { saveAgentsToRedux } from '../../../actions/agents/agents_actions'
-import { insertAgent, getAgents, } from '../../../api/agents/agents_api'
+import { saveOperatorsToRedux } from '../../actions/agents/agents_actions'
+import { insertOperator, getOperators, } from '../../api/agents/agents_api'
 
-class CreateAgent extends Component {
+class CreateOperator extends Component {
 
   constructor() {
     super()
     this.state = {
-      friendly_name: '',
-      agent_email: '',
+      operator_email: '',
       saving: false,
     }
   }
 
-  createAgent() {
-    insertAgent(this.state.agent_email, this.state.friendly_name)
+  createOperator() {
+    insertOperator(this.state.operator_email, this.props.agent.agent_id)
       .then((data) => {
         message.success(data.message)
-        getAgents()
-          .then((data) => {
-            this.props.saveAgentsToRedux(data)
-            this.props.history.push('/app/agents')
-          })
+        return getOperators()
+      })
+      .then((data) => {
+        this.props.saveOperatorsToRedux(data)
+        this.props.history.push(`/app/agents/${this.props.agent_id}`)
+        this.props.closeModal()
       })
       .catch((err) => {
         message.error(err.response.data)
@@ -43,28 +43,20 @@ class CreateAgent extends Component {
 
 	render() {
 		return (
-			<div id='CreateAgent' style={comStyles().container}>
-				<h1>Create New Agent (Intelligence Group)</h1>
+			<div id='CreateOperator' style={comStyles().container}>
+				<h1>Create New Operator</h1>
         <p>This will not send an invite to the email...</p>
-
-        <p style={{ fontWeight: 'bold' }}>Friendly Name</p>
-        <Input
-          placeholder='Intelligence Group Name'
-          value={this.state.friendly_name}
-          onChange={e => this.setState({ friendly_name: e.target.value })}
-        />
-        <br />
 
         <p style={{ fontWeight: 'bold' }}>Email Address</p>
         <Input
           placeholder='something@gmail.com'
-          value={this.state.agent_email}
-          onChange={e => this.setState({ agent_email: e.target.value })}
-          onPressEnter={this.state.agent_email.length === 0 ? () => {} : () => this.createAgent()}
+          value={this.state.operator_email}
+          onChange={e => this.setState({ operator_email: e.target.value })}
+          onPressEnter={this.state.operator_email.length === 0 ? () => {} : () => this.createOperator()}
         />
         <br />
-        <Button type='primary' icon='user-add' onClick={() => this.createAgent()} loading={this.state.saving} disabled={this.state.agent_email.length === 0}>
-          Create Agent
+        <Button type='primary' icon='user-add' onClick={() => this.createOperator()} loading={this.state.saving} disabled={this.state.operator_email.length === 0}>
+          Create Operator
         </Button>
 			</div>
 		)
@@ -72,18 +64,20 @@ class CreateAgent extends Component {
 }
 
 // defines the types of variables in this.props
-CreateAgent.propTypes = {
+CreateOperator.propTypes = {
 	history: PropTypes.object.isRequired,
-  saveAgentsToRedux: PropTypes.func.isRequired,
+  saveOperatorsToRedux: PropTypes.func.isRequired,
+  agent: PropTypes.object.isRequired,             // passed in
+  closeModal: PropTypes.func.isRequired,          // passed in
 }
 
 // for all optional props, define a default value
-CreateAgent.defaultProps = {
+CreateOperator.defaultProps = {
 
 }
 
 // Wrap the prop in Radium to allow JS styling
-const RadiumHOC = Radium(CreateAgent)
+const RadiumHOC = Radium(CreateOperator)
 
 // Get access to state from the Redux store
 const mapReduxToProps = (redux) => {
@@ -95,7 +89,7 @@ const mapReduxToProps = (redux) => {
 // Connect together the Redux store with this React component
 export default withRouter(
 	connect(mapReduxToProps, {
-    saveAgentsToRedux,
+    saveOperatorsToRedux,
 	})(RadiumHOC)
 )
 

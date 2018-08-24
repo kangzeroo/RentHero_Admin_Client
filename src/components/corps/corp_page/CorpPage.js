@@ -31,7 +31,7 @@ class CorpPage extends Component {
       corporation_id: corporation_id,
     })
 
-    if (this.props.loading_complete) {
+    if (this.props.stage_one_complete) {
       this.refreshCorp(corporation_id)
     }
   }
@@ -76,7 +76,7 @@ class CorpPage extends Component {
 CorpPage.propTypes = {
 	history: PropTypes.object.isRequired,
   corps: PropTypes.array.isRequired,
-  loading_complete: PropTypes.bool.isRequired,
+  stage_one_complete: PropTypes.bool.isRequired,
 }
 
 // for all optional props, define a default value
@@ -91,7 +91,7 @@ const RadiumHOC = Radium(CorpPage)
 const mapReduxToProps = (redux) => {
 	return {
     corps: redux.corps.all_corps,
-    loading_complete: redux.app.loading_complete,
+    stage_one_complete: redux.app.stage_one_complete,
 	}
 }
 

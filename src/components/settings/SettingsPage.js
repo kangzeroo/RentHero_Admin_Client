@@ -142,7 +142,7 @@ class SettingsPage extends Component {
 		return (
 			<div id='SettingsPage' style={comStyles().container}>
 				{
-					this.props.loading_complete
+					this.props.stage_one_complete
 					?
 					this.renderSettings()
 					:
@@ -158,7 +158,7 @@ SettingsPage.propTypes = {
 	history: PropTypes.object.isRequired,
 	staff_profile: PropTypes.object.isRequired,
 	corporation_profile: PropTypes.object.isRequired,
-	loading_complete: PropTypes.bool.isRequired,
+	stage_one_complete: PropTypes.bool.isRequired,
 	// staffs: PropTypes.array.isRequired,
 }
 
@@ -175,7 +175,7 @@ const mapReduxToProps = (redux) => {
 	return {
 		staff_profile: redux.auth.staff_profile,
 		corporation_profile: redux.auth.corporation_profile,
-		loading_complete: redux.app.loading_complete,
+		stage_one_complete: redux.app.stage_one_complete,
 		// staffs: redux.auth.staffs,
 	}
 }

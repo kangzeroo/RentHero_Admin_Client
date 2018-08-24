@@ -6,11 +6,15 @@ import { connect } from 'react-redux'
 import Radium from 'radium'
 import PropTypes from 'prop-types'
 import Rx from 'rxjs'
+import moment from 'moment'
 import { withRouter } from 'react-router-dom'
 import {
-
-} from 'antd-mobile'
-
+  Divider,
+  Button,
+  Modal,
+  Table,
+} from 'antd'
+import CreateOperator from '../operators/CreateOperator'
 
 class AgentPage extends Component {
 
@@ -21,6 +25,10 @@ class AgentPage extends Component {
       agent: {},
 
       loading: true,
+
+      toggle_modal: false,
+      modal_name: '',              // name of the modal
+      context: {},
     }
   }
 
@@ -30,7 +38,7 @@ class AgentPage extends Component {
       agent_id: agent_id,
     })
 
-    if (this.props.loading_complete) {
+    if (this.props.stage_one_complete) {
       this.refreshAgent(agent_id)
     }
   }
@@ -54,12 +62,109 @@ class AgentPage extends Component {
 		}
 	}
 
+  toggleModal(bool, attr, context) {
+    if (bool && attr) {
+      history.pushState(null, null, `${this.props.location.pathname}?show=${attr}`)
+    } else {
+      history.pushState(null, null, `${this.props.location.pathname}`)
+    }
+    this.setState({
+      toggle_modal: bool,
+      modal_name: attr,
+      context,
+    })
+  }
+
+  renderAppropriateModal(modal_name, context) {
+    if (modal_name === 'create_operator') {
+      return this.renderModal()
+    }
+  }
+
+  renderModal() {
+    return (
+      <Modal
+        wrapClassName='vertical-center-modal'
+        visible={this.state.toggle_modal}
+        footer=''
+        onCancel={() => this.toggleModal(false)}
+        width='80%'
+      >
+        <CreateOperator
+          agent={this.state.agent}
+          closeModal={() => this.toggleModal(false)}
+        />
+      </Modal>
+    )
+  }
+
+  renderOperators() {
+    return (
+      <div>
+        <div style={comStyles().row_container}>
+          <h2>{`${this.state.agent && this.state.agent.operator_ids ? this.state.agent.operator_ids.length : 0} Operators`}</h2>
+          <Button type='primary' onClick={() => this.toggleModal(true, 'create_operator')}>
+            INVITE OPERATOR
+          </Button>
+        </div>
+        {
+          this.renderOperatorsTable()
+        }
+      </div>
+    )
+  }
+
+  renderOperatorsTable() {
+    const columns = [{
+      title: 'ID',
+      dataIndex: 'operator_id',
+      width: '25%',
+    }, {
+      title: 'Name',
+      width: '25%',
+      render: (operator) => `${operator.first_name} ${operator.last_name}`
+    }, {
+      title: 'Email',
+      dataIndex: 'email',
+      width: '25%',
+    }, {
+      title: 'Created On',
+      dataIndex: 'created_at',
+      render: (operation) => `${moment(operation.created_at).format('LLL')}`,
+      width: '25%',
+    }]
+    return (
+      <Table
+        columns={columns}
+        dataSource={this.state.agent.operator_ids
+                      ?
+                      this.state.agent.operator_ids.map((op) => {
+                                                        return this.props.all_operators.filter((aop) => {
+                                                          return aop.operator_id === op
+                                                        })[0]
+                                                      })
+                      :
+                      []
+                    }
+        loading={this.state.loading}
+      />
+    )
+  }
+
+
 
 	render() {
 		return (
 			<div id='AgentPage' style={comStyles().container}>
 				<h2>{`${this.state.agent.first_name ? `${this.state.agent.first_name} ${this.state.agent.last_name}` : this.state.agent.email }`}</h2>
         <p>{`${this.state.agent.first_name ? this.state.agent.email : ''}`}</p>
+        <Divider />
+        {
+          this.renderOperators()
+        }
+        {
+          this.renderAppropriateModal(this.state.modal_name, this.state.context)
+        }
 			</div>
 		)
 	}
@@ -69,7 +174,8 @@ class AgentPage extends Component {
 AgentPage.propTypes = {
 	history: PropTypes.object.isRequired,
   all_agents: PropTypes.array.isRequired,
-  loading_complete: PropTypes.bool.isRequired,
+  all_operators: PropTypes.array.isRequired,
+  stage_one_complete: PropTypes.bool.isRequired,
 }
 
 // for all optional props, define a default value
@@ -84,7 +190,8 @@ const RadiumHOC = Radium(AgentPage)
 const mapReduxToProps = (redux) => {
 	return {
     all_agents: redux.agents.all_agents,
-    loading_complete: redux.app.loading_complete,
+    all_operators: redux.agents.all_operators,
+    stage_one_complete: redux.app.stage_one_complete,
 	}
 }
 
@@ -104,6 +211,13 @@ const comStyles = () => {
       display: 'flex',
       flexDirection: 'column',
       padding: '20px',
-		}
+		},
+    row_container: {
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    }
 	}
 }

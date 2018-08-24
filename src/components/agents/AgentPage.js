@@ -13,6 +13,7 @@ import {
   Button,
   Modal,
   Table,
+  Card,
 } from 'antd'
 import CreateOperator from '../operators/CreateOperator'
 
@@ -136,7 +137,7 @@ class AgentPage extends Component {
     return (
       <Table
         columns={columns}
-        dataSource={this.state.agent.operator_ids
+        dataSource={this.state.agent && this.state.agent.operator_ids
                       ?
                       this.state.agent.operator_ids.map((op) => {
                                                         return this.props.all_operators.filter((aop) => {
@@ -160,7 +161,11 @@ class AgentPage extends Component {
         <p>{`${this.state.agent.first_name ? this.state.agent.email : ''}`}</p>
         <Divider />
         {
+          this.props.stage_one_complete
+          ?
           this.renderOperators()
+          :
+          <Card loading bordered={false} />
         }
         {
           this.renderAppropriateModal(this.state.modal_name, this.state.context)

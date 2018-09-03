@@ -57,3 +57,17 @@ export const insertOperator = (email, agent_id) => {
   })
   return p
 }
+
+export const selectOperatorForIntelligence = (agent_id, operators) => {
+  const p = new Promise((res, rej) => {
+    axios.post(`${ADMIN_MICROSERVICE}/select_operator_for_intelligence`, { agent_id, operators, }, authHeaders())
+      .then((data) => {
+        // once we have the response, only then do we dispatch an action to Redux
+        res(data.data)
+      })
+      .catch((err) => {
+        rej(err)
+      })
+  })
+  return p
+}

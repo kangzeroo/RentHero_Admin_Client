@@ -71,3 +71,17 @@ export const selectOperatorForIntelligence = (agent_id, operators) => {
   })
   return p
 }
+
+export const removeOperatorFromIntelligence = (agent_id, operator_id) => {
+  const p = new Promise((res, rej) => {
+    axios.post(`${ADMIN_MICROSERVICE}/remove_operator_from_intelligence`, { agent_id, operator_id, }, authHeaders())
+      .then((data) => {
+        // once we have the response, only then do we dispatch an action to Redux
+        res(data.data)
+      })
+      .catch((err) => {
+        rej(err)
+      })
+  })
+  return p
+}

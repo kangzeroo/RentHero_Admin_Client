@@ -16,6 +16,7 @@ import {
   Card,
 } from 'antd'
 import CreateOperator from '../operators/CreateOperator'
+import SelectedOperator from '../operators/SelectedOperator'
 
 class AgentPage extends Component {
 
@@ -83,6 +84,8 @@ class AgentPage extends Component {
   renderAppropriateModal(modal_name, context) {
     if (modal_name === 'create_operator') {
       return this.renderModal()
+    } else if (modal_name === 'selected_operator') {
+      return this.renderSelectModal(context)
     }
   }
 
@@ -101,6 +104,28 @@ class AgentPage extends Component {
       >
         <CreateOperator
           agent={this.state.agent}
+          closeModal={() => closeModal()}
+        />
+      </Modal>
+    )
+  }
+
+  renderSelectModal(operator) {
+    const closeModal = () => {
+      this.toggleModal(false)
+      this.refreshAgent(this.state.agent_id)
+    }
+    return (
+      <Modal
+        wrapClassName='vertical-center-modal'
+        visible={this.state.toggle_modal}
+        footer=''
+        onCancel={() => this.toggleModal(false)}
+        width='80%'
+      >
+        <SelectedOperator
+          agent={this.state.agent}
+          operator={operator}
           closeModal={() => closeModal()}
         />
       </Modal>
@@ -156,6 +181,14 @@ class AgentPage extends Component {
                       []
                     }
         loading={this.state.loading}
+        onRow={(record) => {
+          console.log(record)
+          return {
+            onClick: () => {
+              this.toggleModal(true, 'selected_operator', record)
+            },       // click row
+          };
+        }}
       />
     )
   }

@@ -39,6 +39,8 @@ class AgentPage extends Component {
       agent_id: agent_id,
     })
 
+    console.log(agent_id)
+
     if (this.props.stage_one_complete) {
       this.refreshAgent(agent_id)
     }
@@ -52,6 +54,8 @@ class AgentPage extends Component {
 
 	refreshAgent(agent_id) {
 		const agent = this.props.all_agents.filter((ass) => { return ass.agent_id === agent_id })[0]
+    console.log(agent)
+    console.log(this.state.agent_id)
 		if (agent) {
 			this.setState({
         agent: agent,
@@ -83,6 +87,10 @@ class AgentPage extends Component {
   }
 
   renderModal() {
+    const closeModal = () => {
+      this.toggleModal(false)
+      this.refreshAgent(this.state.agent_id)
+    }
     return (
       <Modal
         wrapClassName='vertical-center-modal'
@@ -93,7 +101,7 @@ class AgentPage extends Component {
       >
         <CreateOperator
           agent={this.state.agent}
-          closeModal={() => this.toggleModal(false)}
+          closeModal={() => closeModal()}
         />
       </Modal>
     )

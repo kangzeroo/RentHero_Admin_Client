@@ -30,11 +30,11 @@ class CreateAgent extends Component {
     insertAgent(this.state.agent_email, this.state.friendly_name)
       .then((data) => {
         message.success(data.message)
-        getAgents()
-          .then((data) => {
-            this.props.saveAgentsToRedux(data)
-            this.props.history.push('/app/agents')
-          })
+        return getAgents()
+      })
+      .then((data) => {
+        this.props.saveAgentsToRedux(data)
+        this.props.history.push('/app/agents')
       })
       .catch((err) => {
         message.error(err.response.data)

@@ -10,10 +10,14 @@ import { withRouter } from 'react-router-dom'
 import {
   Input,
   Button,
+  Select,
   message,
+  Divider,
 } from 'antd'
-import { saveOperatorsToRedux } from '../../actions/agents/agents_actions'
-import { insertOperator, getOperators, } from '../../api/agents/agents_api'
+const Option = Select.Option
+import { saveOperatorsToRedux, saveAgentsToRedux, } from '../../actions/agents/agents_actions'
+import { insertOperator, getOperators, selectOperatorForIntelligence, getAgents, } from '../../api/agents/agents_api'
+
 
 class CreateOperator extends Component {
 
@@ -22,18 +26,25 @@ class CreateOperator extends Component {
     this.state = {
       operator_email: '',
       saving: false,
+
+
+      search_string: '',
+      selected_operators: [],
     }
+  }
+
+  componentWillMount() {
+    console.log(this.props.all_operators)
   }
 
   createOperator() {
     insertOperator(this.state.operator_email, this.props.agent.agent_id)
       .then((data) => {
         message.success(data.message)
-        return getOperators()
+        return this.refreshAgents()
       })
-      .then((data) => {
-        this.props.saveOperatorsToRedux(data)
-        this.props.history.push(`/app/agents/${this.props.agent_id}`)
+      .then(() => {
+        // this.props.history.push(`/app/agents/${this.props.agent_id}`)
         this.props.closeModal()
       })
       .catch((err) => {
@@ -41,10 +52,105 @@ class CreateOperator extends Component {
       })
   }
 
+  refreshAgents() {
+    const p = new Promise((res, rej) => {
+      getAgents()
+        .then((data) => {
+          this.props.saveAgentsToRedux(data)
+          return getOperators()
+        })
+        .then((data) => {
+          this.props.saveOperatorsToRedux(data)
+          res('Refreshed')
+        })
+        .catch((err) => {
+          console.log(err)
+          rej(err)
+        })
+    })
+    return p
+  }
+
+  renderExistingOperators() {
+    const filtered_operators = this.props.all_operators.filter((op) => {
+      console.log(op)
+      return op.first_name.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1 ||
+             op.last_name.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1 ||
+             op.email.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1
+    })
+    const onCancel = () => {
+      this.setState({
+        selected_operators: [],
+        search_string: '',
+      })
+    }
+    const onSave = () => {
+      const operators = this.state.selected_operators.map(op => { return op.substring(2).replace('=2', ':') })
+      console.log(operators)
+      selectOperatorForIntelligence(this.props.agent.agent_id, operators)
+        .then((data) => {
+          message.success(data.message)
+          return this.refreshAgents()
+        })
+        .then((data) => {
+          console.log(data)
+          // this.props.history.push(`/app/agents/${this.props.agent_id}`)
+          this.props.closeModal()
+        })
+        .catch((err) => {
+          console.log(err)
+          message.error(err.response.data)
+        })
+    }
+    return (
+      <div>
+        <h1>Select Existing Operator</h1>
+        <p>Add an existing operator to this intelligence group</p>
+        <Select
+          mode="multiple"
+          showSearch
+          style={{ width: '100%', }}
+          placeholder='Select existing operator'
+          value={this.state.selected_operators}
+          onSearch={e => this.setState({ search_string: e, })}
+          onChange={(selections, v) => this.setState({ selected_operators: selections, }, () => console.log(this.state.selected_operators))}
+          disabled={this.state.saving}
+        >
+          {
+            filtered_operators.map((operator) => {
+              return (
+                <Option key={operator.operator_id}>
+                  {`${operator.first_name} ${operator.last_name} -- ${operator.email}`}
+                </Option>
+              )
+            })
+          }
+        </Select>
+        <br /><br />
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <Button type='default' onClick={() => onCancel()} disabled={this.state.saving} style={{ marginRight: '10px' }}>
+            CANCEL
+          </Button>
+          <Button type='primary' onClick={() => onSave()} disabled={this.state.saving} loading={this.state.saving} disabled={this.state.saving || this.state.selected_operators.length === 0}>
+            SELECT OPERATORS
+          </Button>
+        </div>
+        <Divider />
+      </div>
+    )
+  }
+
 	render() {
 		return (
 			<div id='CreateOperator' style={comStyles().container}>
-				<h1>Create New Operator</h1>
+        {
+          this.props.all_operators && this.props.all_operators.length > 0
+          ?
+          this.renderExistingOperators()
+          :
+          null
+        }
+				<h1>Invite New Operator</h1>
         <p>This will not send an invite to the email...</p>
 
         <p style={{ fontWeight: 'bold' }}>Email Address</p>
@@ -67,6 +173,8 @@ class CreateOperator extends Component {
 CreateOperator.propTypes = {
 	history: PropTypes.object.isRequired,
   saveOperatorsToRedux: PropTypes.func.isRequired,
+  saveAgentsToRedux: PropTypes.func.isRequired,
+  all_operators: PropTypes.array.isRequired,
   agent: PropTypes.object.isRequired,             // passed in
   closeModal: PropTypes.func.isRequired,          // passed in
 }
@@ -82,7 +190,7 @@ const RadiumHOC = Radium(CreateOperator)
 // Get access to state from the Redux store
 const mapReduxToProps = (redux) => {
 	return {
-
+    all_operators: redux.agents.all_operators,
 	}
 }
 
@@ -90,6 +198,7 @@ const mapReduxToProps = (redux) => {
 export default withRouter(
 	connect(mapReduxToProps, {
     saveOperatorsToRedux,
+    saveAgentsToRedux,
 	})(RadiumHOC)
 )
 

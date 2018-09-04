@@ -14,9 +14,12 @@ import {
   Modal,
   Table,
   Card,
+  message,
+  Input,
 } from 'antd'
 import CreateOperator from '../operators/CreateOperator'
 import SelectedOperator from '../operators/SelectedOperator'
+import { updateAgent } from '../../api/agents/agents_api'
 
 class AgentPage extends Component {
 
@@ -25,6 +28,8 @@ class AgentPage extends Component {
     this.state = {
       agent_id: '',
       agent: {},
+
+      intel_group_name: '',
 
       loading: true,
 
@@ -60,6 +65,7 @@ class AgentPage extends Component {
 		if (agent) {
 			this.setState({
         agent: agent,
+        intel_group_name: agent.friendly_name,
         loading: false,
       })
 		} else {
@@ -193,13 +199,67 @@ class AgentPage extends Component {
     )
   }
 
-
+  renderHeader() {
+    const updateAgentName = () => {
+      updateAgent({
+        agent_id: this.state.agent.agent_id,
+        friendly_name: this.state.intel_group_name,
+        email: this.state.agent.email,
+        actual_email: this.state.actual_email,
+      })
+      .then((data) => {
+        message.success(data.message)
+        this.setState({
+          agent: data.agent,
+          editable: false,
+        })
+      })
+      .catch((err) => {
+        console.log(err)
+        message.error(err.response.data)
+      })
+    }
+    if (this.state.editable) {
+      return (
+        <div>
+          <p style={{ fontWeight: 'bold' }}>Intelligence Group Name</p>
+          <Input
+            value={this.state.intel_group_name}
+            onChange={e => this.setState({ intel_group_name: e.target.value })}
+          />
+          <br /><br />
+          <div style={{ display: 'flex', flexDirection: 'row'}}>
+            <Button type='default' onClick={() => this.setState({ intel_group_name: this.state.agent.friendly_name, editable: false, })} style={{ marginRight: '10px' }}>
+              CANCEL
+            </Button>
+            <Button type='primary' onClick={() => updateAgentName()}>
+              SAVE
+            </Button>
+          </div>
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+  				    <h2>{`${this.state.agent.friendly_name ? this.state.agent.friendly_name : this.state.agent.email }`}</h2>
+              <Button type='default' onClick={() => this.setState({ editable: true, })}>
+                EDIT
+              </Button>
+          </div>
+          <p>{`Actual Email: ${this.state.agent.actual_email}`}</p>
+          <p>{`Alias Email: ${this.state.agent.email}`}</p>
+        </div>
+      )
+    }
+  }
 
 	render() {
 		return (
 			<div id='AgentPage' style={comStyles().container}>
-				<h2>{`${this.state.agent.first_name ? `${this.state.agent.first_name} ${this.state.agent.last_name}` : this.state.agent.email }`}</h2>
-        <p>{`${this.state.agent.first_name ? this.state.agent.email : ''}`}</p>
+        {
+          this.renderHeader()
+        }
         <Divider />
         {
           this.props.stage_one_complete

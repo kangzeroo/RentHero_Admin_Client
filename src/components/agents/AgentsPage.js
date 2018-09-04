@@ -62,7 +62,7 @@ class AgentsPage extends Component {
 							>
 								<List.Item.Meta
 									avatar={<Avatar style={{ backgroundColor: '#ffa751', verticalAlign: 'middle' }}>{item.email.toUpperCase()[0]}</Avatar>}
-									title={<a href=''>{`${item.first_name ? item.first_name : item.email } ${item.last_name ? item.last_name : ''}`}</a>}
+									title={<a href=''>{`${item.friendly_name ? item.friendly_name : item.email}`}</a>}
 									description={`Email: ${item.email}`}
 								/>
 							</List.Item>

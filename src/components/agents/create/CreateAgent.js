@@ -27,7 +27,7 @@ class CreateAgent extends Component {
   }
 
   createAgent() {
-    insertAgent(this.state.agent_email, this.state.friendly_name)
+    insertAgent(this.state.friendly_name, this.state.agent_email)
       .then((data) => {
         message.success(data.message)
         return getAgents()

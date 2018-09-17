@@ -74,7 +74,7 @@ class CorpsPage extends Component {
 
 	render() {
 		return (
-			<div id='CorpsPage' style={comStyles().container}>
+			<div id='CorpsPage' style={comStyles().scroll} className='pretty_scrollbar'>
 				 {
            this.props.stage_one_complete
            ?
@@ -140,6 +140,19 @@ const comStyles = () => {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-    }
+    },
+    scroll: {
+			display: 'flex',
+			flexDirection: 'column',
+			// flexWrap: 'wrap',
+			// maxHeight: '100%',
+			minWidth: '100%',
+			maxWidth: '100%',
+			height: '100%',
+			overflowY: 'scroll',
+			// padding: '15px',
+			justifyContent: 'flex-start',
+		  padding: '20px',
+		},
 	}
 }

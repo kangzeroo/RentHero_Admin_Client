@@ -74,9 +74,9 @@ class CreateOperator extends Component {
   renderExistingOperators() {
     const filtered_operators = this.props.all_operators.filter((op) => {
       console.log(op)
-      return op.first_name.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1 ||
-             op.last_name.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1 ||
-             op.email.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1
+      return op.first_name && op.first_name.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1 ||
+             op.last_name && op.last_name.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1 ||
+             op.email && op.email.toLowerCase().indexOf(this.state.search_string.toLowerCase()) > -1
     })
     const onCancel = () => {
       this.setState({

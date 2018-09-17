@@ -130,7 +130,7 @@ class ProxiesPage extends Component {
 
 	render() {
 		return (
-			<Card id='ProxiesPage' style={comStyles().container} bordered={false} loading={!this.props.stage_one_complete}>
+			<Card id='ProxiesPage' style={comStyles().scroll} className='pretty_scrollbar' bordered={false} loading={!this.props.stage_one_complete}>
 				<h1>{`${this.props.proxies && this.props.proxies.length > 0 ? this.props.proxies.length : 0} Proxies`}</h1>
         {
           this.renderProxiesTable()
@@ -181,6 +181,19 @@ const comStyles = () => {
 		container: {
       display: 'flex',
       flexDirection: 'column',
-		}
+		},
+    scroll: {
+			display: 'flex',
+			flexDirection: 'column',
+			// flexWrap: 'wrap',
+			// maxHeight: '100%',
+			minWidth: '100%',
+			maxWidth: '100%',
+			height: '100%',
+			overflowY: 'scroll',
+			// padding: '15px',
+			justifyContent: 'flex-start',
+		  padding: '20px',
+		},
 	}
 }

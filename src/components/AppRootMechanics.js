@@ -40,7 +40,8 @@ import {
 import {
 	saveCorpsToRedux,
 } from '../actions/corp/corp_actions'
-
+import { getProxies } from '../api/proxies/proxies_api'
+import { saveProxiesToRedux } from '../actions/proxies/proxies_actions'
 
 // this 'higher order component'(HOC) creator takes a component (called ComposedComponent)
 // and returns a new component with added functionality
@@ -101,10 +102,12 @@ export default (ComposedComponent) => {
 					const agents = results[1]
 					const operators = results[2]
 					const corps = results[3]
+					const proxies = results[4]
 					this.props.saveAdsToRedux(ads)
 					this.props.saveAgentsToRedux(agents)
 					this.props.saveOperatorsToRedux(operators)
 					this.props.saveCorpsToRedux(corps)
+					this.props.saveProxiesToRedux(proxies)
 					this.props.stageOneComplete()
 					this.props.history.push(app_location)
 				})
@@ -116,6 +119,7 @@ export default (ComposedComponent) => {
 				getAgents(),
 				getOperators(),
 				getAllCorporations(),
+				getProxies(),
 			]
 			console.log(initials)
 			return Promise.all(initials)
@@ -161,6 +165,7 @@ export default (ComposedComponent) => {
 		saveAgentsToRedux: PropTypes.func.isRequired,
 		saveCorpsToRedux: PropTypes.func.isRequired,
 		saveOperatorsToRedux: PropTypes.func.isRequired,
+		saveProxiesToRedux: PropTypes.func.isRequired,
   }
 
   // for all optional props, define a default value
@@ -188,6 +193,7 @@ export default (ComposedComponent) => {
 			saveAgentsToRedux,
 			saveCorpsToRedux,
 			saveOperatorsToRedux,
+			saveProxiesToRedux,
     })(AppRootMechanics)
 	)
 }

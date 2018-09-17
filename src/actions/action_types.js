@@ -21,3 +21,6 @@ export const SAVE_ADS = 'SAVE_ADS'
 
 // actions related to corp
 export const SAVE_CORPS = 'SAVE_CORPS'
+
+// actions related to proxies
+export const SAVE_PROXIES = 'SAVE_PROXIES'

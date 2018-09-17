@@ -24,6 +24,7 @@ import AdPage from './ads/AdPage'
 import EmailsPage from './emails/EmailsPage'
 import AgentsPage from './agents/AgentsPage'
 import AgentPage from './agents/AgentPage'
+import ProxiesPage from './proxy/ProxiesPage'
 import CorpsPage from './corps/CorpsPage'
 import CorpPage from './corps/corp_page/CorpPage'
 import CreateAgent from './agents/create/CreateAgent'
@@ -58,6 +59,8 @@ class AppRoutes extends Component {
       this.props.changeSelectedTab('home')
     } else if (path.startsWith('/app/agents')) {
       this.props.changeSelectedTab('agents')
+    } else if (path.startsWith('/app/proxies')) {
+      this.props.changeSelectedTab('proxies')
     }
   }
 
@@ -95,6 +98,8 @@ class AppRoutes extends Component {
 
         <Route exact path='/app/emails' component={RequireAuth(EmailsPage)} />
 
+        <Route exact path='/app/proxies' component={RequireAuth(ProxiesPage)} />
+
         <Route exact path='/app/settings' component={RequireAuth(SettingsPage)} />
         <Route exact path='/app/registration' component={RequireAuth(RegistrationHome)} />
       </Switch>
@@ -131,6 +136,7 @@ class AppRoutes extends Component {
         { key: 'ads', title: 'Ads', path: '/app/ads', icon: (<Icon type='appstore' />), selectedIcon: (<Icon type='appstore' style={{ color: '#ffa751' }} />) },
         { key: 'corps', title: 'Agencies', path: '/app/corps', icon: (<Icon type='shop' />), selectedIcon: (<Icon type='shop' style={{ color: '#fc67fa' }} />) },
         { key: 'agents', title: 'Agents', path: '/app/agents', icon: (<Icon type='user' />), selectedIcon: (<Icon type='user' style={{ color: '#ffa751' }} />) },
+        { key: 'proxies', title: 'Proxies', path: '/app/proxies', icon: (<Icon type='user' />), selectedIcon: (<Icon type='user' style={{ color: '#ffa751' }} />) },
         { key: 'emails', title: 'Emails', path: '/app/emails', icon: (<Icon type='mail' />), selectedIcon: (<Icon type='user' style={{ color: '#ffa751' }} />) },
         { key: 'settings', title: 'Settings', path: '/app/settings', icon: (<Icon type='setting' />), selectedIcon: (<Icon type='setting' style={{ color: '#ffa751' }} />) },
       ]
@@ -139,6 +145,7 @@ class AppRoutes extends Component {
         { key: 'ads', title: 'Ads', path: '/app/ads', icon: (<Icon type='appstore' />) },
         { key: 'corps', title: 'Agencies', path: '/app/corps', icon: (<Icon type='shop' />) },
         { key: 'agents', title: 'Agents', path: '/app/agents', icon: (<Icon type='user' />) },
+        { key: 'proxies', title: 'Proxies', path: '/app/proxies', icon: (<Icon type='user' />) },
         { key: 'emails', title: 'Emails', path: '/app/emails', icon: (<Icon type='mail' />) },
         { key: 'settings', title: 'Settings', path: '/app/settings', icon: (<Icon type='setting' />) },
       ]

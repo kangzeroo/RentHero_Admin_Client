@@ -58,8 +58,8 @@ class CorpsPage extends Component {
                   title={`${item.corporation_name}`}
                   description={
                     <div>
-                      <p>{`${item.ad_ids.length} Ads`}</p>
-                      <p>{`${item.staffs.length} Team Members`}</p>
+                      <p>{`${item.ad_ids && item.ad_ids.length > 0 ? item.ad_ids.length : 0 } Ads`}</p>
+                      <p>{`${item.staffs && item.staffs.length > 0 ? item.staffs.length : 0 } Team Members`}</p>
                     </div>
                   }
                 />

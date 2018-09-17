@@ -19,6 +19,7 @@ import {
 } from 'antd'
 import CreateOperator from '../operators/CreateOperator'
 import SelectedOperator from '../operators/SelectedOperator'
+import SelectedProxyPopup from '../proxy/SelectedProxyPopup'
 import { updateAgent } from '../../api/agents/agents_api'
 
 class AgentPage extends Component {
@@ -92,6 +93,10 @@ class AgentPage extends Component {
       return this.renderModal()
     } else if (modal_name === 'selected_operator') {
       return this.renderSelectModal(context)
+    } else if (modal_name === 'selected_proxy') {
+      return this.renderSelectProxyModal(context)
+    } else if (modal_name === 'add_proxy') {
+      return this.renderAddProxyModal(context)
     }
   }
 
@@ -132,6 +137,27 @@ class AgentPage extends Component {
         <SelectedOperator
           agent={this.state.agent}
           operator={operator}
+          closeModal={() => closeModal()}
+        />
+      </Modal>
+    )
+  }
+
+  renderSelectProxyModal(proxy) {
+    const closeModal = () => {
+      this.toggleModal(false)
+      this.refreshAgent(this.state.agent_id)
+    }
+    return (
+      <Modal
+        wrapClassName='vertical-center-modal'
+        visible={this.state.toggle_modal}
+        footer=''
+        onCancel={() => this.toggleModal(false)}
+        width='80%'
+      >
+        <SelectedProxyPopup
+          proxy={proxy}
           closeModal={() => closeModal()}
         />
       </Modal>
@@ -192,6 +218,57 @@ class AgentPage extends Component {
           return {
             onClick: () => {
               this.toggleModal(true, 'selected_operator', record)
+            },       // click row
+          };
+        }}
+      />
+    )
+  }
+
+  renderProxies() {
+    return (
+      <div>
+        <div style={comStyles().row_container}>
+          <h2>{`${this.state.agent && this.state.agent.proxies ? this.state.agent.proxies.length : 0} Proxies`}</h2>
+          <Button type='primary' onClick={() => this.toggleModal(true, 'add_proxy')}>
+            ADD PROXY
+          </Button>
+        </div>
+        {
+          this.renderProxiesTable()
+        }
+      </div>
+    )
+  }
+
+  renderProxiesTable() {
+    const columns = [{
+      title: 'Proxy ID',
+      dataIndex: 'proxy_id',
+      width: '25%',
+    }, {
+      title: 'Corporation Name',
+      width: '25%',
+      render: (proxy) => `${this.props.all_corps.filter((corp) => corp.corporation_id === proxy.corporation_id)[0].corporation_name}`
+    }, {
+      title: 'Proxy Email',
+      dataIndex: 'proxy_email',
+      width: '25%',
+    }, {
+      title: 'Proxy Phone',
+      dataIndex: 'proxy_phone',
+      width: '25%',
+    }]
+    return (
+      <Table
+        columns={columns}
+        dataSource={this.state.agent.proxies}
+        loading={this.state.loading}
+        onRow={(record) => {
+          console.log(record)
+          return {
+            onClick: () => {
+              this.toggleModal(true, 'selected_proxy', record)
             },       // click row
           };
         }}
@@ -268,6 +345,14 @@ class AgentPage extends Component {
           :
           <Card loading bordered={false} />
         }
+        <Divider />
+        {
+          this.props.stage_one_complete
+          ?
+          this.renderProxies()
+          :
+          <Card loading bordered={false} />
+        }
         {
           this.renderAppropriateModal(this.state.modal_name, this.state.context)
         }
@@ -281,6 +366,7 @@ AgentPage.propTypes = {
 	history: PropTypes.object.isRequired,
   all_agents: PropTypes.array.isRequired,
   all_operators: PropTypes.array.isRequired,
+  all_corps: PropTypes.array.isRequired,
   stage_one_complete: PropTypes.bool.isRequired,
 }
 
@@ -297,6 +383,7 @@ const mapReduxToProps = (redux) => {
 	return {
     all_agents: redux.agents.all_agents,
     all_operators: redux.agents.all_operators,
+    all_corps: redux.corps.all_corps,
     stage_one_complete: redux.app.stage_one_complete,
 	}
 }

@@ -17,9 +17,10 @@ const config = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: 'bundle.js'
+    // filename: 'bundle.js'
+    filename: '[name].[hash].js'
   },
-  devtool: 'source-map',
+  // devtool: 'source-map',
   module: {
     rules: [
       {
@@ -107,16 +108,16 @@ const config = {
     new HtmlWebpackPlugin({
       template: './index.html',
       inject: 'body',
-    }) //,
+    }),
     // new ManifestPlugin({
     //   gcm_sender_id: '103953800507'
     // }),
-    // new webpack.optimize.UglifyJsPlugin({
-    //     compress: {
-    //         drop_console: true
-    //     },
-    //     mangle: false
-    // })
+    new webpack.optimize.UglifyJsPlugin({
+        compress: {
+            drop_console: true
+        },
+        mangle: false
+    })
   ],
   devServer: {
     hot: true,

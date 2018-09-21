@@ -36,14 +36,16 @@ class CorpProfile extends Component {
 
   componentWillMount() {
     console.log(this.props.corporation)
-    const full_ads = this.props.ads.filter((ad) => {
-      return this.props.corporation.ad_ids.filter((ad_id) => {
-        return ad_id === ad.ad_id
-      }).length > 0
-    })
-    this.setState({
-      ads: full_ads,
-    })
+    if (this.props.ads && this.props.ads.length > 0 && this.props.corporation.ad_ids && this.props.corporation.ad_ids.length > 0) {
+      const full_ads = this.props.ads.filter((ad) => {
+        return this.props.corporation.ad_ids.filter((ad_id) => {
+          return ad_id === ad.ad_id
+        }).length > 0
+      })
+      this.setState({
+        ads: full_ads,
+      })
+    }
   }
 
   toggleModal(bool, attr, context) {

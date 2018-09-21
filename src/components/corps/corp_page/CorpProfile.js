@@ -14,8 +14,12 @@ import {
   List,
   Avatar,
   Icon,
+  Button,
+  Modal,
+  Table,
 } from 'antd'
 import { renderProcessedThumbnailSmall } from '../../../api/general/general_api'
+import AddStaffPopup from '../../modules/AddStaffPopup'
 
 class CorpProfile extends Component {
 
@@ -23,6 +27,10 @@ class CorpProfile extends Component {
     super()
     this.state = {
       ads: [],
+
+      toggle_modal: false,
+      modal_name: '',              // name of the modal
+      context: {},
     }
   }
 
@@ -38,6 +46,46 @@ class CorpProfile extends Component {
     })
   }
 
+  toggleModal(bool, attr, context) {
+    if (bool && attr) {
+      history.pushState(null, null, `${this.props.location.pathname}?show=${attr}`)
+    } else {
+      history.pushState(null, null, `${this.props.location.pathname}`)
+    }
+    this.setState({
+      toggle_modal: bool,
+      modal_name: attr,
+      context,
+    })
+  }
+
+  renderAppropriateModal(modal_name, context) {
+    if (modal_name === 'add_staff') {
+      return this.renderModal(context)
+    }
+  }
+
+  renderModal(context) {
+    const closeModal = () => {
+      this.toggleModal(false)
+      // this.refreshAgent(this.state.agent_id)
+    }
+    return (
+      <Modal
+        wrapClassName='vertical-center-modal'
+        visible={this.state.toggle_modal}
+        footer=''
+        onCancel={() => this.toggleModal(false)}
+        width='80%'
+      >
+        <AddStaffPopup
+          corp={context}
+          closeModal={() => closeModal()}
+        />
+      </Modal>
+    )
+  }
+
   renderHeader(corp) {
     return (
       <div style={comStyles().header_container}>
@@ -48,10 +96,43 @@ class CorpProfile extends Component {
     )
   }
 
+  renderCorpDetails(corp) {
+    const columns = [{
+      title: 'ID',
+      dataIndex: 'proxy_id',
+      key: 'proxy_id',
+    }, {
+      title: 'Proxy Email',
+      dataIndex: 'proxy_email',
+      key: 'proxy_email',
+    }, {
+      title: 'Proxy Phone',
+      dataIndex: 'proxy_phone',
+      key: 'proxy_phone',
+    }];
+    return (
+      <Card bordered={false}>
+        <h1>{corp.corporation_name}</h1>
+        <p style={{ fontWeight: 'bold' }}>
+          Proxies
+        </p>
+        <Table
+          dataSource={corp.proxies}
+          columns={columns}
+        />
+      </Card>
+    )
+  }
+
   renderAdmin(corp) {
     return (
       <Card bordered={false}>
-        <h2>{`${corp.staffs.length} Team Members`}</h2>
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h2>{`${corp.staffs && corp.staffs.length ? corp.staffs.length : 0} Team Members`}</h2>
+          <Button type='default' icon='add-user' onClick={() => this.toggleModal(true, 'add_staff', corp)}>
+            Add Staff
+          </Button>
+        </div>
         <List
           itemLayout='horizontal'
           dataSource={corp.staffs}
@@ -143,11 +224,18 @@ class CorpProfile extends Component {
         cover={this.renderHeader(this.props.corporation)}
       >
         {
+          this.renderCorpDetails(this.props.corporation)
+        }
+        <Divider />
+        {
           this.renderAdmin(this.props.corporation)
         }
         <Divider />
         {
           this.renderAds(this.props.corporation, this.state.ads)
+        }
+        {
+          this.renderAppropriateModal(this.state.modal_name, this.state.context)
         }
 			</Card>
 		)

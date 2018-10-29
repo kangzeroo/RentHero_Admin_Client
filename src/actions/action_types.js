@@ -24,3 +24,8 @@ export const SAVE_CORPS = 'SAVE_CORPS'
 
 // actions related to proxies
 export const SAVE_PROXIES = 'SAVE_PROXIES'
+
+// actions related to billings
+export const SAVE_PRODUCTS = 'SAVE_PRODUCTS'
+export const SAVE_BILLABLE_CONVOS = 'SAVE_BILLABLE_CONVOS'
+export const SAVE_PLANS = 'SAVE_PLANS'

@@ -31,6 +31,10 @@ import CreateAgent from './agents/create/CreateAgent'
 import SettingsPage from './settings/SettingsPage'
 import RegistrationHome from './registration/RegistrationHome'
 
+import BillingsPage from './billings/BillingsPage'
+import CreateProductPage from './billings/products/CreateProductPage'
+import ProductPage from './billings/products/ProductPage'
+import CreatePlanPage from './billings/plans/CreatePlanPage'
 
 class AppRoutes extends Component {
 
@@ -61,6 +65,8 @@ class AppRoutes extends Component {
       this.props.changeSelectedTab('agents')
     } else if (path.startsWith('/app/proxies')) {
       this.props.changeSelectedTab('proxies')
+    } else if (path.startsWith('/app/billings')) {
+      this.props.changeSelectedTab('billings')
     }
   }
 
@@ -102,6 +108,12 @@ class AppRoutes extends Component {
 
         <Route exact path='/app/settings' component={RequireAuth(SettingsPage)} />
         <Route exact path='/app/registration' component={RequireAuth(RegistrationHome)} />
+
+        <Route exact path='/app/billings' component={RequireAuth(BillingsPage)} />
+        <Route exact path='/app/billings/products/create' component={RequireAuth(CreateProductPage)} />
+        <Route exact path='/app/billings/products/:product_id' component={RequireAuth(ProductPage)} />
+        <Route exact path='/app/billings/plans/create' component={RequireAuth(CreatePlanPage)} />
+
       </Switch>
 		)
 	}
@@ -139,6 +151,7 @@ class AppRoutes extends Component {
         { key: 'proxies', title: 'Proxies', path: '/app/proxies', icon: (<Icon type='user' />), selectedIcon: (<Icon type='user' style={{ color: '#ffa751' }} />) },
         { key: 'emails', title: 'Emails', path: '/app/emails', icon: (<Icon type='mail' />), selectedIcon: (<Icon type='user' style={{ color: '#ffa751' }} />) },
         { key: 'settings', title: 'Settings', path: '/app/settings', icon: (<Icon type='setting' />), selectedIcon: (<Icon type='setting' style={{ color: '#ffa751' }} />) },
+        { key: 'billings', title: 'Billings', path: '/app/billings', icon: (<Icon type='money-collect' />), selectedIcon: (<Icon type='money-collect' style={{ color: '#fc67fa' }} />) },
       ]
       desktop_navs = [
         { key: 'home', title: 'Home', path: '/app/home', icon: (<Icon type='home' />) },
@@ -148,6 +161,7 @@ class AppRoutes extends Component {
         { key: 'proxies', title: 'Proxies', path: '/app/proxies', icon: (<Icon type='user' />) },
         { key: 'emails', title: 'Emails', path: '/app/emails', icon: (<Icon type='mail' />) },
         { key: 'settings', title: 'Settings', path: '/app/settings', icon: (<Icon type='setting' />) },
+        { key: 'billings', title: 'Billings', path: '/app/billings', icon: (<Icon type='money-collect' />) },
       ]
     }
     return (

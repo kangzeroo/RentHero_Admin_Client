@@ -75,6 +75,10 @@ class BillConvo extends Component {
       })
   }
 
+  recordUsages() {
+
+  }
+
 	render() {
 		return (
 			<div id='BillConvo' style={comStyles().container}>
@@ -148,6 +152,11 @@ class BillConvo extends Component {
               )
             })
           }
+          <Divider>Record Usage</Divider>
+          <Button type='primary' size='large' onClick={() => this.recordUsages()} style={{ borderRadius: '25px' }}>
+            Send To Stripe
+          </Button>
+
 			</div>
 		)
 	}
